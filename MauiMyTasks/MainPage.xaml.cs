@@ -1,11 +1,12 @@
-﻿namespace MauiMyTasks;
+﻿using MauiMyTasks.ViewModel;
+
+namespace MauiMyTasks;
 
 public partial class MainPage : ContentPage
 {
-    int count = 0;
-
-    public MainPage()
+    public MainPage(MainViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }
