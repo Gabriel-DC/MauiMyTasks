@@ -6,8 +6,10 @@ namespace MauiMyTasks.ViewModel;
 
 public partial class MainViewModel : ObservableObject
 {
-    public MainViewModel()
+    private IConnectivity _connectivity;
+    public MainViewModel(IConnectivity connectivity)
     {
+        _connectivity = connectivity;
         Items = new ObservableCollection<string>();
     }
     
@@ -18,10 +20,16 @@ public partial class MainViewModel : ObservableObject
     private string _text;
     
     [RelayCommand]
-    private void Add()
+    private async Task Add()
     {
         if(string.IsNullOrWhiteSpace(Text))
             return;
+
+        if (_connectivity.NetworkAccess != NetworkAccess.Internet)
+        {
+            await Shell.Current.DisplayAlert("Uh oh!", "No internet", "OK");
+            return;
+        }
         
         Items.Add(Text);
         Text = string.Empty;
